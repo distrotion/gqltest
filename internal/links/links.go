@@ -7,9 +7,9 @@ import (
 
 	"github.com/distrotion/gqltest/db"
 	"github.com/distrotion/gqltest/internal/users"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
-// #1
 type Link struct {
 	ID      string
 	Title   string
@@ -19,27 +19,7 @@ type Link struct {
 
 var ctx = context.TODO()
 
-//#2
 func (link Link) Save() int64 {
-	//#3
-
-	//db.Getcol()
-
-	// stmt, err := database.Getcol()
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	// //#4
-	// res, err := stmt.Exec(link.Title, link.Address)
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	// //#5
-	// id, err := res.LastInsertId()
-	// if err != nil {
-	// 	log.Fatal("Error:", err.Error())
-	// }
-	// log.Print("Row inserted!")
 
 	res, insertErr := db.Getcol().InsertOne(ctx, link)
 	if insertErr != nil {
@@ -48,4 +28,24 @@ func (link Link) Save() int64 {
 	fmt.Println(res)
 
 	return 0
+}
+
+func GetAll() []Link {
+
+	//opts := options.Find()
+	//opts.SetSort(bson.D{{"_id", -1}})
+
+	res, insertErr := db.Getcol().Find(ctx, bson.D{{}})
+	if insertErr != nil {
+		log.Fatal(insertErr)
+	}
+	fmt.Println(res)
+
+	var msg []Link
+	if insertErr = res.All(ctx, &msg); insertErr != nil {
+		panic(insertErr)
+	}
+
+	return msg
+
 }

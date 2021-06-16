@@ -10,6 +10,8 @@ import (
 	"github.com/distrotion/gqltest/db"
 	"github.com/distrotion/gqltest/graph"
 	"github.com/distrotion/gqltest/graph/generated"
+	"github.com/distrotion/gqltest/internal/auth"
+	"github.com/go-chi/chi"
 	_ "github.com/urfave/cli/v2"
 )
 
@@ -21,7 +23,9 @@ func main() {
 		port = defaultPort
 	}
 
-	//router := chi.NewRouter()
+	router := chi.NewRouter()
+	router.Use(auth.Middleware())
+
 	db.Getcol()
 
 	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{}}))
