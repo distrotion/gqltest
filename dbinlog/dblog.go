@@ -1,8 +1,8 @@
-package db
+package dblog
 
 import (
 	"context"
-	"fmt"
+	_ "fmt"
 	"log"
 
 	"go.mongodb.org/mongo-driver/mongo"
@@ -11,17 +11,19 @@ import (
 
 var collection *mongo.Collection
 
-func Getcol() *mongo.Collection {
+var ctx = context.TODO()
+
+var server = "mongodb://localhost:9001/"
+var db_mongo = "auth_log"
+var colec_mongo = "income"
+
+func Getcolin() *mongo.Collection {
 	return collection
 }
 
-var ctx = context.TODO()
+//var collec = "income"
 
-var server = "mongodb://localhost:9000/"
-var db_mongo = "aut_clinic"
-var collec = "users_clinic"
-
-func init() {
+func loginit() {
 	clientOptions := options.Client().ApplyURI(server)
 	client, err := mongo.Connect(ctx, clientOptions)
 	if err != nil {
@@ -33,6 +35,6 @@ func init() {
 		log.Fatal(err)
 	}
 
-	collection = client.Database(db_mongo).Collection(collec)
-	fmt.Println("database ready to use ...")
+	collection = client.Database(db_mongo).Collection(colec_mongo)
+
 }

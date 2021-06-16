@@ -26,6 +26,7 @@ import (
 // }
 
 func (r *mutationResolver) CreateLink(ctx context.Context, input model.NewLink) (*model.Link, error) {
+
 	var link links.Link
 	link.Title = input.Title
 	link.Address = input.Address
@@ -46,6 +47,10 @@ func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) 
 }
 
 func (r *mutationResolver) Login(ctx context.Context, input model.Login) (string, error) {
+
+	//tokenin, err := jwt.GenerateToken(input.Username)
+	fmt.Print(r)
+
 	var user users.User
 	user.Username = input.Username
 	user.Password = input.Password
@@ -64,6 +69,7 @@ func (r *mutationResolver) Login(ctx context.Context, input model.Login) (string
 }
 
 func (r *mutationResolver) RefreshToken(ctx context.Context, input model.RefreshTokenInput) (string, error) {
+
 	username, err := jwt.ParseToken(input.Token)
 	if err != nil {
 		return "", fmt.Errorf("access denied")
@@ -72,16 +78,19 @@ func (r *mutationResolver) RefreshToken(ctx context.Context, input model.Refresh
 	if err != nil {
 		return "", err
 	}
+
 	return token, nil
 }
 
 func (r *queryResolver) Links(ctx context.Context) ([]*model.Link, error) {
+
 	var resultLinks []*model.Link
 	var dbLinks []links.Link
 	dbLinks = links.GetAll()
 	for _, link := range dbLinks {
 		resultLinks = append(resultLinks, &model.Link{ID: link.ID, Title: link.Title, Address: link.Address})
 	}
+
 	return resultLinks, nil
 }
 

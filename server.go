@@ -8,6 +8,7 @@ import (
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/distrotion/gqltest/db"
+	dblog "github.com/distrotion/gqltest/dbinlog"
 	"github.com/distrotion/gqltest/graph"
 	"github.com/distrotion/gqltest/graph/generated"
 	"github.com/distrotion/gqltest/internal/auth"
@@ -27,6 +28,7 @@ func main() {
 	router.Use(auth.Middleware())
 
 	db.Getcol()
+	dblog.Getcolin()
 
 	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{}}))
 
