@@ -7,6 +7,7 @@ import (
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
+	"github.com/distrotion/gqltest/db"
 	"github.com/distrotion/gqltest/graph"
 	"github.com/distrotion/gqltest/graph/generated"
 	_ "github.com/urfave/cli/v2"
@@ -21,7 +22,7 @@ func main() {
 	}
 
 	//router := chi.NewRouter()
-	mongo.init()
+	db.GetDB()
 
 	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{}}))
 
