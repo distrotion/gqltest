@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"strconv"
 
+	"log"
+
 	"github.com/distrotion/gqltest/db"
 	"golang.org/x/crypto/bcrypt"
-
-	"log"
 )
 
 type User struct {

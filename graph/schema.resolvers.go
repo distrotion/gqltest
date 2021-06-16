@@ -6,13 +6,16 @@ package graph
 import (
 	"context"
 	"fmt"
+	"log"
 	"strconv"
 
+	dblog "github.com/distrotion/gqltest/dbinlog"
 	"github.com/distrotion/gqltest/graph/generated"
 	"github.com/distrotion/gqltest/graph/model"
 	"github.com/distrotion/gqltest/internal/links"
 	"github.com/distrotion/gqltest/internal/users"
 	"github.com/distrotion/gqltest/pkg/jwt"
+	"go.mongodb.org/mongo-driver/bson"
 )
 
 // func (r *mutationResolver) CreateLink(ctx context.Context, input model.NewLink) (*model.Link, error) {
@@ -35,6 +38,13 @@ func (r *mutationResolver) CreateLink(ctx context.Context, input model.NewLink) 
 }
 
 func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) (string, error) {
+
+	inlog, err := dblog.Getcolin().InsertOne(ctx, bson.M{"data_newuser_in": input})
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(inlog)
+
 	var user users.User
 	user.Username = input.Username
 	user.Password = input.Password
@@ -43,13 +53,27 @@ func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) 
 	if err != nil {
 		return "", err
 	}
+
+	outlog, err := dblog.Getcolin().InsertOne(ctx, bson.M{"data_newuser_out": token})
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(outlog)
 	return token, nil
 }
 
 func (r *mutationResolver) Login(ctx context.Context, input model.Login) (string, error) {
 
 	//tokenin, err := jwt.GenerateToken(input.Username)
-	fmt.Print(r)
+
+	//var inlog interface{}
+	//r.ShouldBind(&inlog)
+
+	inlog, err := dblog.Getcolin().InsertOne(ctx, bson.M{"data_login_in": input})
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(inlog)
 
 	var user users.User
 	user.Username = input.Username
@@ -64,6 +88,12 @@ func (r *mutationResolver) Login(ctx context.Context, input model.Login) (string
 	if err != nil {
 		return "", err
 	}
+
+	outlog, err := dblog.Getcolin().InsertOne(ctx, bson.M{"data_login_out": token})
+	if err != nil {
+		log.Fatal(err)
+	}
+	fmt.Println(outlog)
 
 	return token, nil
 }
