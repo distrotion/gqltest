@@ -39,7 +39,7 @@ func (r *mutationResolver) CreateLink(ctx context.Context, input model.NewLink) 
 
 func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) (string, error) {
 
-	inlog, err := dblog.Getcolin().InsertOne(ctx, bson.M{"data_newuser_in": input})
+	inlog, err := dblog.Getcolin().InsertOne(ctx, bson.M{"From": "CreateUser", "data_newuser_in": input})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -54,7 +54,7 @@ func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) 
 		return "", err
 	}
 
-	outlog, err := dblog.Getcolin().InsertOne(ctx, bson.M{"data_newuser_out": token})
+	outlog, err := dblog.Getcolin().InsertOne(ctx, bson.M{"From": "CreateUser", "data_newuser_out": token})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -69,7 +69,7 @@ func (r *mutationResolver) Login(ctx context.Context, input model.Login) (string
 	//var inlog interface{}
 	//r.ShouldBind(&inlog)
 
-	inlog, err := dblog.Getcolin().InsertOne(ctx, bson.M{"data_login_in": input})
+	inlog, err := dblog.Getcolin().InsertOne(ctx, bson.M{"From": "login", "data_login_in": input})
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -89,7 +89,7 @@ func (r *mutationResolver) Login(ctx context.Context, input model.Login) (string
 		return "", err
 	}
 
-	outlog, err := dblog.Getcolin().InsertOne(ctx, bson.M{"data_login_out": token})
+	outlog, err := dblog.Getcolin().InsertOne(ctx, bson.M{"From": "login", "data_login_out": token})
 	if err != nil {
 		log.Fatal(err)
 	}
