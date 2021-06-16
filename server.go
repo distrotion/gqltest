@@ -22,7 +22,7 @@ func main() {
 	}
 
 	//router := chi.NewRouter()
-	db.GetDB()
+	db.Getcol()
 
 	srv := handler.NewDefaultServer(generated.NewExecutableSchema(generated.Config{Resolvers: &graph.Resolver{}}))
 
